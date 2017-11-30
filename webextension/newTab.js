@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /* import-globals-from common.js */
+/* import-globals-from export.js */
 /* import-globals-from fx-newTab.js */
 /* import-globals-from prefs.js */
 /* import-globals-from tiles.js */
@@ -354,12 +355,12 @@ var newTabTools = {
 		case 'options-donate':
 		case 'options-backup':
 			chrome.permissions.request({permissions: ['downloads']}, function(succeeded) {
-				chrome.runtime.sendMessage({name: 'Export:backup'});
+				makeZip();
 			});
 			return;
 		case 'options-restore':
 			let input = newTabTools.optionsPane.querySelector('#options-export input[type="file"]');
-			chrome.runtime.sendMessage({name: 'Import:restore', file: input.files[0]});
+			readZip(input.files[0]);
 			return;
 		case 'newtab-update-donate':
 			window.open('https://darktrojan.github.io/donate.html?newtabtools');
